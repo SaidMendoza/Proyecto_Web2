@@ -1,9 +1,6 @@
-// src/controllers/useInventoryController.ts (o .js si ya lo cambiaste)
 import { useState, useEffect } from 'react';
-// IMPORTANTE: Importa el nuevo servicio
 import { inventoryService } from '../services/inventoryService';
 
-// Tipos fijos por ahora (para no complicar más la DB innecesariamente)
 const TIPOS_FIJOS = [
   { id_tpo: '1', nombre: 'Pescado Fresco' },
   { id_tpo: '2', nombre: 'Marisco' },
@@ -31,7 +28,6 @@ export const useInventoryController = () => {
 
   const loadData = async () => {
     try {
-      // AQUÍ: Llamamos al backend en lugar del Repository
       const data = await inventoryService.getAll();
       setInventory(data);
     } catch (error) {
@@ -41,7 +37,6 @@ export const useInventoryController = () => {
 
   const openModal = (item) => {
     if (item) {
-      // Nota: item.id_lte viene gracias al transform que pusimos en el modelo
       setEditingId(item.id_lte); 
       setFormData({
         speciesName: item.especie.nombre,
@@ -61,7 +56,6 @@ export const useInventoryController = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Preparamos el objeto unificado como lo espera el Backend
     const payload = {
       kilos: parseFloat(formData.kilos),
       numero_cajas: parseInt(formData.boxes),
@@ -80,7 +74,7 @@ export const useInventoryController = () => {
         await inventoryService.create(payload);
       }
       setIsModalOpen(false);
-      loadData(); // Recargamos la lista desde la DB
+      loadData();
     } catch (error) {
       console.error("Error guardando:", error);
       alert("Hubo un error al guardar");

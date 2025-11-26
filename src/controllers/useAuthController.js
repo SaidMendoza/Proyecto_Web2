@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Repository } from '../models/Repository';
-// Adiós a la importación de types
+
+// Apunta al backend
+const API_URL = 'http://localhost:5000/api/auth/login';
 
 export const useAuthController = (onLoginSuccess) => {
   const [username, setUsername] = useState('');
@@ -8,21 +9,28 @@ export const useAuthController = (onLoginSuccess) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Eliminamos el tipo ": React.FormEvent"
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
-      const user = await Repository.Auth.login(username, password);
-      if (user) {
-        onLoginSuccess(user);
+      // Petición POST al servidor
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onLoginSuccess(data); 
       } else {
-        setError('Credenciales inválidas. Verifique usuario y contraseña.');
+        setError(data.message || 'Credenciales inválidas.');
       }
     } catch (err) {
-      setError('Error de conexión con el servicio.');
+      setError('Error de conexión con el servidor.');
     } finally {
       setIsLoading(false);
     }

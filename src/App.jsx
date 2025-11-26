@@ -1,7 +1,5 @@
-// src/App.jsx
 import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
-// Borramos la importación de types porque en JS no se usan interfaces
 
 // Views
 import { LoginView } from './views/LoginView';
@@ -12,11 +10,9 @@ import { BuyersView } from './views/BuyersView';
 import { UserManagementView } from './views/UserManagementView';
 
 const App = () => {
-  // Quitamos los genericos <User | null>
   const [currentUser, setCurrentUser] = useState(null);
   const [currentPage, setCurrentPage] = useState('dashboard');
 
-  // Quitamos el tipo (user: User)
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
     setCurrentPage('dashboard');
@@ -37,7 +33,6 @@ const App = () => {
       case 'inventory': return <InventoryView />;
       case 'sales': return <SalesView />;
       case 'buyers': return <BuyersView />;
-      // Validación simple de rol (asegúrate que tu usuario tenga la propiedad role)
       case 'users': return currentUser.role === 'admin' ? <UserManagementView /> : <DashboardView />;
       default: return <DashboardView />;
     }

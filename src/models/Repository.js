@@ -1,7 +1,3 @@
-// src/models/Repository.js
-
-// Simulamos los datos viejos para que las pestañas que aun no migras
-// no rompan la aplicación.
 
 export const Repository = {
   Auth: {
@@ -23,8 +19,6 @@ export const Repository = {
     update: async () => {},
     getReportByDate: async () => []
   },
-  // La parte de Inventory ya NO se usa desde aquí porque la migraste,
-  // pero la dejamos vacía por si acaso alguna referencia quedó suelta.
   Inventory: {
     getAllDetailed: async () => [],
     getTypes: async () => [],

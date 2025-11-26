@@ -1,4 +1,3 @@
-// backend/models/Lote.js
 const mongoose = require('mongoose');
 
 const LoteSchema = new mongoose.Schema({
@@ -8,20 +7,18 @@ const LoteSchema = new mongoose.Schema({
   precio_kilo_salida: { type: Number, required: true },
   fecha: { type: Date, default: Date.now },
 
-  // Datos de la Especie (Incrustados directamente)
+  // Datos de la Especie
   especie: {
     nombre: { type: String, required: true },
-    id_tpo: { type: String, required: true }, // ID del tipo (1 o 2)
+    id_tpo: { type: String, required: true }, 
     imagen: { type: String }
   }
 });
 
-// Esto es un truco para que el frontend no se rompa:
-// Cuando convierta a JSON, transformará el "_id" de Mongo a "id_lte"
 LoteSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {
-    ret.id_lte = ret._id; // Mapeamos _id a id_lte
+    ret.id_lte = ret._id;
     delete ret._id;
     delete ret.__v;
     return ret;

@@ -20,7 +20,6 @@ export const useDashboardController = () => {
   const loadReport = async () => {
     setLoading(true);
     try {
-      // Pedimos al backend el reporte de la fecha seleccionada
       const res = await fetch(`${API_URL}?date=${fecha}`);
       if (!res.ok) throw new Error('Error cargando reporte');
       const data = await res.json();
@@ -44,8 +43,6 @@ export const useDashboardController = () => {
 
   const handleUpdateSale = async (e) => {
     e.preventDefault();
-    // (Por brevedad, la lógica de actualización se mantiene igual o podrías implementarla con fetch PUT)
-    // Para ver los datos en el dashboard, lo importante es el loadReport de arriba.
     setEditingSale(null);
   };
 

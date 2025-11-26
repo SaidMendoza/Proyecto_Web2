@@ -14,9 +14,7 @@ router.get('/', async (req, res) => {
 
 // CREAR USUARIO
 router.post('/', async (req, res) => {
-  // Aquí podrías validar si la contraseña del admin es correcta, 
-  // pero por simplicidad lo crearemos directo.
-  const user = new User({
+    const user = new User({
     username: req.body.username,
     password: req.body.password,
     name: req.body.name,

@@ -15,7 +15,7 @@ export const SalesView = () => {
         <h2 className="text-3xl font-bold text-slate-800 mb-8">Registro de Venta</h2>
         <form onSubmit={handleSaleSubmit} className="bg-white rounded-xl shadow-lg border border-slate-100 p-8 space-y-8">
           
-          {/* SECCIÓN 1: CLIENTE */}
+          {/* CLIENTE */}
           <div>
             <div className="flex justify-between items-center mb-4 border-b pb-2">
                <h3 className="text-lg font-bold text-slate-800">1. Cliente</h3>
@@ -33,7 +33,7 @@ export const SalesView = () => {
             </select>
           </div>
 
-          {/* SECCIÓN 2: PRODUCTO */}
+          {/* PRODUCTO */}
           <div>
             <h3 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2">2. Producto</h3>
             <select value={selectedLoteId} onChange={e => setSelectedLoteId(e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-white">
@@ -56,7 +56,7 @@ export const SalesView = () => {
             )}
           </div>
 
-          {/* SECCIÓN 3: DETALLES */}
+          {/* DETALLES */}
           <div className={!selectedLote ? 'opacity-50 pointer-events-none' : ''}>
              <h3 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2">3. Detalles</h3>
              <div className="grid grid-cols-3 gap-6">

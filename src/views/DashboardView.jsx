@@ -1,4 +1,3 @@
-// src/views/DashboardView.jsx
 import React from 'react';
 import { useDashboardController } from '../controllers/useDashboardController';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
@@ -175,7 +174,6 @@ export const DashboardView = () => {
   );
 };
 
-// Componente simple sin tipos explícitos
 const MetricCard = ({ icon: Icon, color, label, value }) => (
   <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
     <div className={`p-4 bg-${color}-50 rounded-full`}>

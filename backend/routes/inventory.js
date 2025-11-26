@@ -1,19 +1,18 @@
-// backend/routes/inventory.js
 const express = require('express');
 const router = express.Router();
 const Lote = require('../models/Lote');
 
-// OBTENER TODOS (Equivalente a Inventory.getAllDetailed)
+// OBTENER TODOS
 router.get('/', async (req, res) => {
   try {
-    const lotes = await Lote.find().sort({ fecha: -1 }); // Ordenar por fecha reciente
+    const lotes = await Lote.find().sort({ fecha: -1 }); 
     res.json(lotes);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// CREAR NUEVO (Equivalente a Inventory.create)
+// CREAR NUEVO
 router.post('/', async (req, res) => {
   const { kilos, numero_cajas, precio_kilo_salida, fecha, especie } = req.body;
 
@@ -37,13 +36,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ACTUALIZAR (Equivalente a Inventory.update)
+// ACTUALIZAR
 router.put('/:id', async (req, res) => {
   try {
     const loteActualizado = await Lote.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true } // Devuelve el objeto actualizado
+      { new: true } 
     );
     res.json(loteActualizado);
   } catch (err) {
@@ -51,7 +50,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// ELIMINAR (Equivalente a Inventory.delete)
+// ELIMINAR 
 router.delete('/:id', async (req, res) => {
   try {
     await Lote.findByIdAndDelete(req.params.id);

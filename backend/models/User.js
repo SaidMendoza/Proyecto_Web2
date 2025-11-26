@@ -2,12 +2,11 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }, // En producción deberíamos encriptarla
+  password: { type: String, required: true }, 
   name: { type: String, required: true },
-  role: { type: String, default: 'user' } // 'admin' o 'user'
+  role: { type: String, default: 'user' }
 });
 
-// Mapeamos _id a id para el frontend
 UserSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {

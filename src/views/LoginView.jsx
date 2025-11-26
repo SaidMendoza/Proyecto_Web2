@@ -1,9 +1,7 @@
-// src/views/LoginView.jsx
 import React from 'react';
 import { Lock, User } from 'lucide-react';
 import { useAuthController } from '../controllers/useAuthController';
 
-// En JavaScript no necesitamos interfaces ni tipos para las props
 export const LoginView = ({ onLoginSuccess }) => {
   const { 
     username, 

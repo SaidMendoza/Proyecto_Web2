@@ -22,9 +22,7 @@ export const useUserController = () => {
     e.preventDefault();
     setError('');
     
-    // Aquí validamos la contraseña admin en el frontend por simplicidad,
-    // pero idealmente el backend debería hacerlo.
-    if (adminAuth !== 'admin123') { // CONTRASEÑA MAESTRA FIJA POR AHORA
+    if (adminAuth !== 'admin123') { 
        setError('Contraseña de administrador incorrecta');
        return;
     }

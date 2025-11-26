@@ -12,7 +12,6 @@ const SaleSchema = new mongoose.Schema({
   fecha: { type: Date, default: Date.now }
 });
 
-// Transformación para que el frontend reciba "id_cmp" y no se rompa
 SaleSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {

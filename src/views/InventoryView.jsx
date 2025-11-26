@@ -8,7 +8,6 @@ export const InventoryView = () => {
     formData, setFormData, openModal, handleSubmit, handleDelete 
   } = useInventoryController();
 
-  // Función auxiliar para encontrar el nombre del tipo (Pescado/Marisco)
   const getNombreTipo = (idTipo) => {
     const tipo = tipos.find(t => t.id_tpo === idTipo);
     return tipo ? tipo.nombre : 'General';

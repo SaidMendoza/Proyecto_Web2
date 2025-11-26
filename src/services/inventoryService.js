@@ -1,5 +1,4 @@
-// src/services/inventoryService.js
-const API_URL = 'http://localhost:5000/api/inventory'; // Cambiará en producción
+const API_URL = 'http://localhost:5000/api/inventory'; 
 
 export const inventoryService = {
   getAll: async () => {

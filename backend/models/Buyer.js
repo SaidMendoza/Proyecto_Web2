@@ -9,7 +9,7 @@ const BuyerSchema = new mongoose.Schema({
   fechaRegistro: { type: Date, default: Date.now }
 });
 
-// Truco para que el Frontend no se rompa: convertimos _id a codigo_cpr
+// convertimos _id a codigo_cpr
 BuyerSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {

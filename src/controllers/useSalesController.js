@@ -38,14 +38,14 @@ export const useSalesController = () => {
 
   const loadData = async () => {
     try {
-      // 1. CARGAMOS COMPRADORES (¡AHORA DESDE EL BACKEND REAL!)
+      // COMPRADORES
       const resBuyers = await fetch('http://localhost:5000/api/buyers');
       const compradoresReales = await resBuyers.json();
       setCompradores(compradoresReales);
 
-      // 2. Cargamos Inventario (Desde Backend)
+      // Inventario
       const inv = await inventoryService.getAll();
-      setInventario(inv.filter(i => i.kilos > 0)); // Solo mostramos lotes con existencias
+      setInventario(inv.filter(i => i.kilos > 0)); 
     } catch (error) {
       console.error("Error cargando datos:", error);
     }
@@ -81,7 +81,6 @@ export const useSalesController = () => {
         cajas_vendidas: cajasVal
       };
 
-      // --- CAMBIO: USAR FETCH AL BACKEND REAL ---
       const response = await fetch('http://localhost:5000/api/sales', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,12 +93,11 @@ export const useSalesController = () => {
       }
       
       const compraGuardada = await response.json();
-      // ------------------------------------------
       
       setStatus({ type: 'success', msg: `Venta registrada: $${compraGuardada.precio_total.toFixed(2)}` });
       setSelectedLoteId('');
       setSaleData({ kilos: '', cajas: '', precio: '' });
-      loadData(); // Esto actualizará el stock visualmente porque lo lee de la DB
+      loadData(); 
     } catch (err) {
       setStatus({ type: 'error', msg: err.message });
     }
@@ -108,7 +106,7 @@ export const useSalesController = () => {
   const handleCreateBuyer = async (e) => {
     e.preventDefault();
     
-    // Crear comprador rápido usando la API real
+    // Crear comprador
     const buyerData = {
       nombre: newBuyerData.nombre,
       apellido_paterno: newBuyerData.paterno,
@@ -126,7 +124,7 @@ export const useSalesController = () => {
       const newBuyer = await res.json();
       
       await loadData(); // Recargar listas
-      setSelectedBuyerId(newBuyer.codigo_cpr); // Seleccionar el nuevo comprador automáticamente
+      setSelectedBuyerId(newBuyer.codigo_cpr);
       setShowBuyerModal(false);
       setNewBuyerData({ nombre: '', paterno: '', materno: '', correo: '', direccion: '' });
     } catch (error) {

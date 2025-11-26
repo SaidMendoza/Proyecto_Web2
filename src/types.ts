@@ -1,9 +1,6 @@
-
-// Definición de tipos basada en el diagrama relacional del PDF
-
 // Tabla: Comprador
 export interface Comprador {
-  codigo_cpr: string; // PK: SMALLINT -> string for frontend
+  codigo_cpr: string; // PK: SMALLINT 
   nombre: string; // VARCHAR(15)
   apellido_paterno: string; // VARCHAR(15)
   apellido_materno: string; // VARCHAR(15)
@@ -11,13 +8,13 @@ export interface Comprador {
   correo: string; // VARCHAR(80)
 }
 
-// Tabla: Tipo (e.g., Pescado, Marisco)
+// Tabla: Tipo
 export interface Tipo {
   id_tpo: string; // PK: SMALLINT
   nombre: string; // VARCHAR(30)
 }
 
-// Tabla: Lote (Información del lote de producto)
+// Tabla: Lote 
 export interface Lote {
   id_lte: string; // PK: INTEGER
   kilos: number; // DECIMAL
@@ -26,7 +23,7 @@ export interface Lote {
   fecha: string; // DATETIME (ISO string)
 }
 
-// Tabla: Especie (Detalle del producto en el lote)
+// Tabla: Especie 
 export interface Especie {
   id_epe: string; // PK: INTEGER
   nombre: string; // VARCHAR(25)
@@ -35,7 +32,7 @@ export interface Especie {
   imagen: string; // VARCHAR(100) URL
 }
 
-// Tabla: Compra (Transacción de venta/compra)
+// Tabla: Compra
 export interface Compra {
   id_cmp: string; // PK: INTEGER
   codigo_cpr: string; // FK Comprador
@@ -43,7 +40,6 @@ export interface Compra {
   precio_kilo_final: number; // DECIMAL
   precio_total: number; // DECIMAL
   fecha: string; // DATETIME
-  // Campos extendidos para control lógico de venta parcial
   kilos_vendidos: number;
   cajas_vendidas: number;
 }
@@ -63,7 +59,7 @@ export interface LoteDetallado extends Lote {
 export interface User {
   id: string;
   username: string;
-  password?: string; // Optional when fetching for display, required for auth
+  password?: string; 
   name: string;
   role: 'admin' | 'user';
 }

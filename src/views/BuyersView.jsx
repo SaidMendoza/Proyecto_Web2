@@ -1,4 +1,3 @@
-// src/views/BuyersView.jsx
 import React from 'react';
 import { useBuyersController } from '../controllers/useBuyersController';
 import { Plus, User, Edit2, Trash2, Save, X } from 'lucide-react';

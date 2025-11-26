@@ -40,7 +40,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// EDITAR (Opcional, por si lo usas)
+// EDITAR
 router.put('/:id', async (req, res) => {
   try {
     const updated = await Buyer.findByIdAndUpdate(req.params.id, req.body, { new: true });
