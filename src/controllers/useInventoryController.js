@@ -57,7 +57,7 @@ export const useInventoryController = () => {
       kilos: parseFloat(formData.kilos),
       numero_cajas: parseInt(formData.boxes),
       precio_kilo_salida: parseFloat(formData.price),
-      especie: {
+      especie: {  
         nombre: formData.speciesName,
         id_tpo: formData.selectedTipo,
         imagen: formData.imageUrl || `https://picsum.photos/seed/${formData.speciesName}/200`
