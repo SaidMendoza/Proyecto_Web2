@@ -15,7 +15,7 @@ export const LoginView = ({ onLoginSuccess }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative" 
-         style={{ backgroundImage: 'url("https://picsum.photos/1920/1080?grayscale&blur=2")' }}>
+         style={{ backgroundImage: 'url("https://goo.su/avno1")' }}>
       
       {/* Overlay oscuro */}
       <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"></div>
@@ -24,7 +24,7 @@ export const LoginView = ({ onLoginSuccess }) => {
       <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl border-t-4 border-teal-500">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-slate-800 mb-2">Sistema Lonja</h1>
-          <h2 className="text-xl text-teal-600 font-semibold tracking-wide">Veracruz 2025</h2>
+          <h2 className="text-xl text-teal-600 font-semibold tracking-wide">Veracruz</h2>
           <p className="text-sm text-slate-500 mt-2">Ingreso de Personal Autorizado</p>
         </div>
 
