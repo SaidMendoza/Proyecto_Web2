@@ -51,8 +51,6 @@ export const useInventoryController = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // --- ESTA ES LA PARTE CLAVE ---
-    // El backend espera un objeto que tenga "especie" adentro.
     const payload = {
       kilos: parseFloat(formData.kilos),
       numero_cajas: parseInt(formData.boxes),

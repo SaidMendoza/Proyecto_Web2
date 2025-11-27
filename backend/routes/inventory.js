@@ -2,23 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Lote = require('../models/Lote');
 
-// --- RUTA 1: OBTENER TODOS (GET) ---
-// Esta es la que usa tu página al cargar. Solo lee de la base de datos.
+// OBTENER TODOS GET
 router.get('/', async (req, res) => {
   try {
     const lotes = await Lote.find().sort({ fecha: -1 });
     res.json(lotes);
   } catch (err) {
-    console.error("Error en GET /inventory:", err); // Log para ver el error en Render
+    console.error("Error en GET /inventory:", err);
     res.status(500).json({ message: err.message });
   }
 });
 
-// --- RUTA 2: CREAR NUEVO (POST) ---
-// Esta solo se usa cuando le das a "Guardar" en el formulario.
+//CREAR NUEVO POST
 router.post('/', async (req, res) => {
   try {
-    // Validamos que vengan los datos mínimos
     if (!req.body.especie) {
       return res.status(400).json({ message: "Faltan datos de la especie" });
     }
@@ -45,7 +42,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// --- RUTA 3: ELIMINAR (DELETE) ---
+//ELIMINAR
 router.delete('/:id', async (req, res) => {
   try {
     await Lote.findByIdAndDelete(req.params.id);
@@ -55,7 +52,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// --- RUTA 4: ACTUALIZAR (PUT) ---
+//ACTUALIZAR
 router.put('/:id', async (req, res) => {
   try {
     const loteActualizado = await Lote.findByIdAndUpdate(

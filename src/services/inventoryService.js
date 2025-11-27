@@ -1,4 +1,3 @@
-// Asegúrate de que API_URL apunta a tu Render:
 const API_URL = 'https://api-lonja.onrender.com/api/inventory'; 
 
 export const inventoryService = {
@@ -12,7 +11,7 @@ export const inventoryService = {
     const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 
-        'Content-Type': 'application/json' // <--- ¡ESTO ES OBLIGATORIO!
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     });

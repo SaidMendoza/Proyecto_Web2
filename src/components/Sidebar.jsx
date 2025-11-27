@@ -1,8 +1,6 @@
 import React from 'react';
 import { LayoutDashboard, ShoppingCart, Users, LogOut, Package, FishSymbol, ShieldCheck } from 'lucide-react';
 
-// Eliminamos la importación de types y la interfaz
-
 export const Sidebar = ({ activePage, onNavigate, onLogout, currentUser }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Reportes Diarios', icon: LayoutDashboard },

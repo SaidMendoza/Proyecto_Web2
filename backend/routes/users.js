@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcryptjs'); // <--- Importamos
+const bcrypt = require('bcryptjs'); 
 
 // OBTENER TODOS
 router.get('/', async (req, res) => {
