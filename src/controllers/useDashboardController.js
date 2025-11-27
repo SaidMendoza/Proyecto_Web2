@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // URL del backend
-const API_URL = 'http://localhost:5000/api/sales/report';
+const API_URL = 'https://api-lonja.onrender.com/api/sales/report';
 
 export const useDashboardController = () => {
   const [ventas, setVentas] = useState([]);
