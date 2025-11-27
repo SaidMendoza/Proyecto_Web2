@@ -1,26 +1,20 @@
 import { useState, useEffect } from 'react';
 import { inventoryService } from '../services/inventoryService';
 
+// Tipos básicos para el dropdown
 const TIPOS_FIJOS = [
   { id_tpo: '1', nombre: 'Pescado Fresco' },
   { id_tpo: '2', nombre: 'Marisco' },
-  { id_tpo: '3', nombre: 'Productos especiales y derivados' },
 ];
 
 export const useInventoryController = () => {
   const [inventory, setInventory] = useState([]);
   const [tipos, setTipos] = useState(TIPOS_FIJOS);
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   
   const [formData, setFormData] = useState({
-    speciesName: '',
-    selectedTipo: '',
-    kilos: '',
-    boxes: '',
-    price: '',
-    imageUrl: ''
+    speciesName: '', selectedTipo: '', kilos: '', boxes: '', price: '', imageUrl: ''
   });
 
   useEffect(() => {
@@ -32,7 +26,7 @@ export const useInventoryController = () => {
       const data = await inventoryService.getAll();
       setInventory(data);
     } catch (error) {
-      console.error("Error cargando datos:", error);
+      console.error("Error cargando inventario:", error);
     }
   };
 
@@ -57,6 +51,8 @@ export const useInventoryController = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // --- ESTA ES LA PARTE CLAVE ---
+    // El backend espera un objeto que tenga "especie" adentro.
     const payload = {
       kilos: parseFloat(formData.kilos),
       numero_cajas: parseInt(formData.boxes),
@@ -78,7 +74,7 @@ export const useInventoryController = () => {
       loadData();
     } catch (error) {
       console.error("Error guardando:", error);
-      alert("Hubo un error al guardar");
+      alert("Error al guardar: " + error.message);
     }
   };
 
@@ -94,12 +90,7 @@ export const useInventoryController = () => {
   };
 
   return {
-    inventory, tipos,
-    isModalOpen, setIsModalOpen,
-    editingId,
-    formData, setFormData,
-    openModal,
-    handleSubmit,
-    handleDelete
+    inventory, tipos, isModalOpen, setIsModalOpen, editingId,
+    formData, setFormData, openModal, handleSubmit, handleDelete
   };
 };
