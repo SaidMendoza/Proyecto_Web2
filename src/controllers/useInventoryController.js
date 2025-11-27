@@ -5,6 +5,8 @@ import { inventoryService } from '../services/inventoryService';
 const TIPOS_FIJOS = [
   { id_tpo: '1', nombre: 'Pescado Fresco' },
   { id_tpo: '2', nombre: 'Marisco' },
+  { id_tpo: '3', nombre: 'Productos derivados/ Otros' },
+
 ];
 
 export const useInventoryController = () => {
