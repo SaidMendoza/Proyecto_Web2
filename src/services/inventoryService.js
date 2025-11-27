@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/inventory'; 
+const API_URL = 'https://api-lonja.onrender.com/api/inventory'; 
 
 export const inventoryService = {
   getAll: async () => {

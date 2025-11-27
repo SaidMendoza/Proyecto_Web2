@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:5000/api/buyers';
+const API_URL = 'https://api-lonja.onrender.com/api/inventory';
 
 export const useBuyersController = () => {
   const [buyers, setBuyers] = useState([]);
