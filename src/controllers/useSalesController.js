@@ -34,7 +34,7 @@ export const useSalesController = () => {
 
   const loadData = async () => {
     try {
-      const resBuyers = await fetch('http://localhost:4000/api/buyers'); 
+      const resBuyers = await fetch('https://api-lonja.onrender.com/api/buyers'); 
       const compradoresReales = await resBuyers.json();
       setCompradores(compradoresReales);
 
@@ -80,7 +80,7 @@ export const useSalesController = () => {
         precio_total: kilosVal * precioVal
       };
 
-      const response = await fetch('http://localhost:4000/api/sales', { 
+      const response = await fetch('https://api-lonja.onrender.com/api/sales', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(compraPayload)
@@ -109,7 +109,7 @@ export const useSalesController = () => {
       apellido_materno: newBuyerData.materno, correo: newBuyerData.correo, direccion: newBuyerData.direccion
     };
     try {
-      const res = await fetch('http://localhost:4000/api/buyers', {      
+      const res = await fetch('https://api-lonja.onrender.com/api/buyers', {      
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buyerData)
       });
       const responseData = await res.json();

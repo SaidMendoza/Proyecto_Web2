@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:4000/api/buyers';
+//const API_URL = 'http://localhost:4000/api/buyers';
 
-//const API_URL = 'https://api-lonja.onrender.com/api/buyers';
+const API_URL = 'https://api-lonja.onrender.com/api/buyers';
 
 export const useBuyersController = () => {
   const [buyers, setBuyers] = useState([]);
@@ -62,7 +62,7 @@ export const useBuyersController = () => {
       });
       const responseData = await res.json();
       if (!res.ok) {
-        // Verificamos si es error de duplicado (Mongo error 11000)
+        // Verificamos si es error de duplicado
         if (responseData.message && (responseData.message.includes('E11000') || responseData.message.includes('duplicate'))) {
           alert("⚠️ Error: Este correo ya está registrado en el sistema.");
         } else {
