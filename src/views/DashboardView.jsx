@@ -89,7 +89,6 @@ export const DashboardView = () => {
               <th className="px-6 py-3 text-right">Kilos</th>
               <th className="px-6 py-3 text-right">Cajas</th>
               <th className="px-6 py-3 text-right">Total</th>
-              <th className="px-6 py-3 text-center">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -104,11 +103,6 @@ export const DashboardView = () => {
                   <td className="px-6 py-3 text-right">{v.kilos_vendidos?.toFixed(2)}</td>
                   <td className="px-6 py-3 text-right">{v.cajas_vendidas}</td>
                   <td className="px-6 py-3 text-right font-bold">${v.precio_total.toFixed(2)}</td>
-                  <td className="px-6 py-3 text-center">
-                    <button onClick={() => openEditModal(v)} className="text-blue-500 hover:bg-blue-50 p-2 rounded">
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                  </td>
                 </tr>
               ))
             )}

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api'; // URL de backend local
+const API_URL = 'http://localhost:4000/api'; // URL de backend local
 
 export const getInventory = async () => {
     const response = await fetch(`${API_URL}/inventory`);

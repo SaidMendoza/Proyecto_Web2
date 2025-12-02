@@ -1,7 +1,11 @@
 import { useState } from 'react';
 
 // Apunta al backend
-const API_URL = 'https://api-lonja.onrender.com/api/auth/login';
+//Local
+//const API_URL = 'http://localhost:5000/api/auth/login';
+const API_URL = 'http://127.0.0.1:4000/api/auth/login';
+//Render
+//const API_URL = 'https://api-lonja.onrender.com/api/auth/login';
 
 export const useAuthController = (onLoginSuccess) => {
   const [username, setUsername] = useState('');

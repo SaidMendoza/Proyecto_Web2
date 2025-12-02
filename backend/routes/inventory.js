@@ -16,21 +16,21 @@ router.get('/', async (req, res) => {
 //CREAR NUEVO POST
 router.post('/', async (req, res) => {
   try {
-    if (!req.body.especie) {
+    const { kilos, num_de_cajas, precio_kilo_salida, fecha, especie } = req.body;
+
+    if (!especie || !especie.nombre) {
       return res.status(400).json({ message: "Faltan datos de la especie" });
     }
 
-    const { kilos, numero_cajas, precio_kilo_salida, fecha, especie } = req.body;
-
     const nuevoLote = new Lote({
       kilos,
-      numero_cajas,
+      num_de_cajas, 
       precio_kilo_salida,
       fecha: fecha || new Date(),
       especie: {
         nombre: especie.nombre,
         id_tpo: especie.id_tpo,
-        imagen: especie.imagen
+        imagen: especie.imagen 
       }
     });
 

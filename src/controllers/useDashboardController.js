@@ -1,11 +1,20 @@
 import { useState, useEffect } from 'react';
 
 // URL del backend
-const API_URL = 'https://api-lonja.onrender.com/api/sales/report';
+const API_URL = 'http://localhost:4000/api/sales/report';
+
+//const API_URL = 'https://api-lonja.onrender.com/api/sales/report';
 
 export const useDashboardController = () => {
   const [ventas, setVentas] = useState([]);
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+  // Función truco para obtener la fecha local en formato YYYY-MM-DD
+const getAleadyLocalISO = () => {
+  const d = new Date();
+  const offset = d.getTimezoneOffset() * 60000; // Tu diferencia horaria en milisegundos
+  return new Date(d.getTime() - offset).toISOString().split('T')[0];
+};
+
+const [fecha, setFecha] = useState(getAleadyLocalISO());
   const [loading, setLoading] = useState(false);
   
   // Estados para modal de edición

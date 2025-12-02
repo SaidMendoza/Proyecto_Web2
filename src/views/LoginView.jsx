@@ -14,12 +14,12 @@ export const LoginView = ({ onLoginSuccess }) => {
   } = useAuthController(onLoginSuccess);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative" 
-         style={{ backgroundImage: 'url("https://goo.su/avno1")' }}>
+    <div 
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" 
+      style={{ backgroundImage: 'url("/playa.webp")' }}
+    >
       
-      {/* Overlay oscuro */}
-      <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"></div>
-      
+      <div className="absolute inset-0 bg-slate-900/80"></div>      
       {/* Tarjeta de Login */}
       <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl border-t-4 border-teal-500">
         <div className="text-center mb-8">

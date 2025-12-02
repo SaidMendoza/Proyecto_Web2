@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'https://api-lonja.onrender.com/api/users';
+const API_URL = 'http://localhost:4000/api/users';
+//const API_URL = 'https://api-lonja.onrender.com/api/users';
+
 export const useUserController = () => {
   const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);

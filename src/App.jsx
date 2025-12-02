@@ -15,7 +15,14 @@ const App = () => {
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
-    setCurrentPage('dashboard');
+    
+
+    // Si es Admin, va a Dashboard. Si es Vendedor, va directo a Ventas.
+    if (user.role === 'admin') {
+      setCurrentPage('dashboard');
+    } else {
+      setCurrentPage('sales'); 
+    }
   };
 
   const handleLogout = () => {
@@ -29,12 +36,19 @@ const App = () => {
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'dashboard': return <DashboardView />;
+      case 'dashboard': 
+        // Si un vendedor intenta entrar aquí, se regresa a Ventas
+        return currentUser.role === 'admin' ? <DashboardView /> : <SalesView />;
+      
       case 'inventory': return <InventoryView />;
       case 'sales': return <SalesView />;
       case 'buyers': return <BuyersView />;
-      case 'users': return currentUser.role === 'admin' ? <UserManagementView /> : <DashboardView />;
-      default: return <DashboardView />;
+      
+      case 'users': 
+        // Protección existente para usuarios
+        return currentUser.role === 'admin' ? <UserManagementView /> : <SalesView />;
+      
+      default: return <SalesView />;
     }
   };
 

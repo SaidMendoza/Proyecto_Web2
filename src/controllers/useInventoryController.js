@@ -1,66 +1,114 @@
 import { useState, useEffect } from 'react';
 import { inventoryService } from '../services/inventoryService';
 
-// Tipos básicos para el dropdown
-const TIPOS_FIJOS = [
+// CATÁLOGOS
+const TIPOS = [
   { id_tpo: '1', nombre: 'Pescado Fresco' },
   { id_tpo: '2', nombre: 'Marisco' },
-  { id_tpo: '3', nombre: 'Productos derivados/ Otros' },
+  { id_tpo: '3', nombre: 'Derivados' },
 
 ];
 
+const ESPECIES_POR_TIPO = {
+  '1': ['Robalo', 'Huachinango', 'Sierra', 'Mojarra', 'Pargo'],
+  '2': ['Camarón Cristal', 'Jaiba', 'Pulpo', 'Ostión', 'Calamar'],
+  '3': ['Surimi', 'Caviar', 'Harina de pescado']
+
+};
+
 export const useInventoryController = () => {
   const [inventory, setInventory] = useState([]);
-  const [tipos, setTipos] = useState(TIPOS_FIJOS);
+  const [tipos] = useState(TIPOS);
+  const [availableSpecies, setAvailableSpecies] = useState([]); 
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   
   const [formData, setFormData] = useState({
-    speciesName: '', selectedTipo: '', kilos: '', boxes: '', price: '', imageUrl: ''
+    selectedTipo: '',
+    speciesName: '',
+    kilos: '',
+    num_de_cajas: '',
+    precio_kilo_salida: '',
+    fecha: '', 
+    imageFile: null,
+    imagePreview: '' 
   });
 
+  useEffect(() => { loadData(); }, []);
+
   useEffect(() => {
-    loadData();
-  }, []);
+    if (formData.selectedTipo) {
+      setAvailableSpecies(ESPECIES_POR_TIPO[formData.selectedTipo] || []);
+      setFormData(prev => ({ ...prev, speciesName: '' }));
+    } else {
+      setAvailableSpecies([]);
+    }
+  }, [formData.selectedTipo]);
 
   const loadData = async () => {
     try {
       const data = await inventoryService.getAll();
       setInventory(data);
-    } catch (error) {
-      console.error("Error cargando inventario:", error);
-    }
+    } catch (error) { console.error(error); }
   };
 
   const openModal = (item) => {
     if (item) {
       setEditingId(item.id_lte); 
+      const tipoId = item.especie.id_tpo;
+      setAvailableSpecies(ESPECIES_POR_TIPO[tipoId] || []);
+      
       setFormData({
+        selectedTipo: tipoId,
         speciesName: item.especie.nombre,
-        selectedTipo: item.especie.id_tpo,
         kilos: item.kilos.toString(),
-        boxes: item.numero_cajas.toString(),
-        price: item.precio_kilo_salida.toString(),
-        imageUrl: item.especie.imagen
+        num_de_cajas: item.num_de_cajas.toString(),
+        precio_kilo_salida: item.precio_kilo_salida.toString(),
+        fecha: item.fecha ? item.fecha.split('T')[0] : '', 
+        imageFile: null,
+        imagePreview: item.especie.imagen 
       });
     } else {
       setEditingId(null);
-      setFormData({ speciesName: '', selectedTipo: '', kilos: '', boxes: '', price: '', imageUrl: '' });
+      setAvailableSpecies([]);
+      setFormData({ 
+        selectedTipo: '', speciesName: '', kilos: '', 
+        num_de_cajas: '', precio_kilo_salida: '', fecha: '',
+        imageFile: null, imagePreview: '' 
+      });
     }
     setIsModalOpen(true);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, imageFile: file, imagePreview: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+    if (!formData.imagePreview) {
+      alert("Por favor selecciona una imagen");
+      return;
+    }
+
     const payload = {
       kilos: parseFloat(formData.kilos),
-      numero_cajas: parseInt(formData.boxes),
-      precio_kilo_salida: parseFloat(formData.price),
-      especie: {  
+      num_de_cajas: parseInt(formData.num_de_cajas),
+      precio_kilo_salida: parseFloat(formData.precio_kilo_salida),
+      fecha: formData.fecha || new Date(), 
+      especie: {
         nombre: formData.speciesName,
         id_tpo: formData.selectedTipo,
-        imagen: formData.imageUrl || `https://picsum.photos/seed/${formData.speciesName}/200`
+        imagen: formData.imagePreview 
       }
     };
 
@@ -73,24 +121,19 @@ export const useInventoryController = () => {
       setIsModalOpen(false);
       loadData();
     } catch (error) {
-      console.error("Error guardando:", error);
       alert("Error al guardar: " + error.message);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Eliminar lote permanentemente?')) {
-      try {
-        await inventoryService.delete(id);
-        loadData();
-      } catch (error) {
-        console.error("Error eliminando:", error);
-      }
+    if (window.confirm('¿Eliminar lote?')) {
+      await inventoryService.delete(id);
+      loadData();
     }
   };
 
   return {
-    inventory, tipos, isModalOpen, setIsModalOpen, editingId,
-    formData, setFormData, openModal, handleSubmit, handleDelete
+    inventory, tipos, availableSpecies, isModalOpen, setIsModalOpen, editingId,
+    formData, setFormData, openModal, handleSubmit, handleDelete, handleImageChange
   };
 };

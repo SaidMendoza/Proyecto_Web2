@@ -4,12 +4,18 @@ const BuyerSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   apellido_paterno: { type: String, required: true },
   apellido_materno: { type: String },
-  correo: { type: String, required: true },
+  
+  correo: { 
+    type: String, 
+    required: true, 
+    unique: true, //No duplicados
+    match: [/.+\@.+\..+/, 'Formato de correo inválido'] // Validación 
+  },
+  
   direccion: { type: String, required: true },
   fechaRegistro: { type: Date, default: Date.now }
 });
 
-// convertimos _id a codigo_cpr
 BuyerSchema.set('toJSON', {
   virtuals: true,
   transform: (doc, ret) => {

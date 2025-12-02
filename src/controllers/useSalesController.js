@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Repository } from '../models/Repository';
 import { inventoryService } from '../services/inventoryService';
 
 export const useSalesController = () => {
@@ -12,22 +11,19 @@ export const useSalesController = () => {
   const [saleData, setSaleData] = useState({ kilos: '', cajas: '', precio: '' });
   const [status, setStatus] = useState({ type: 'idle', msg: '' });
 
-  // Modal rápido de nuevo comprador
   const [showBuyerModal, setShowBuyerModal] = useState(false);
   const [newBuyerData, setNewBuyerData] = useState({ nombre: '', paterno: '', materno: '', correo: '', direccion: '' });
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useEffect(() => { loadData(); }, []);
 
-  // Efecto para autocompletar precio y stock al elegir lote
+  //Autocompletar datos al seleccionar Lote
   useEffect(() => {
     if (selectedLoteId) {
       const lote = inventario.find(l => l.id_lte === selectedLoteId);
       if (lote) {
         setSaleData({
           kilos: lote.kilos.toString(),
-          cajas: lote.numero_cajas.toString(),
+          cajas: (lote.num_de_cajas || lote.numero_cajas || 0).toString(),
           precio: lote.precio_kilo_salida.toString()
         });
       }
@@ -38,17 +34,13 @@ export const useSalesController = () => {
 
   const loadData = async () => {
     try {
-      // COMPRADORES
-      const resBuyers = await fetch('https://api-lonja.onrender.com/api/buyers');
+      const resBuyers = await fetch('http://localhost:4000/api/buyers'); 
       const compradoresReales = await resBuyers.json();
       setCompradores(compradoresReales);
 
-      // Inventario
       const inv = await inventoryService.getAll();
       setInventario(inv.filter(i => i.kilos > 0)); 
-    } catch (error) {
-      console.error("Error cargando datos:", error);
-    }
+    } catch (error) { console.error(error); }
   };
 
   const calculateTotal = () => {
@@ -71,17 +63,24 @@ export const useSalesController = () => {
       const cajasVal = parseInt(saleData.cajas) || 0;
       const precioVal = parseFloat(saleData.precio);
 
+      const now = new Date();
+      const localYear = now.getFullYear();
+      const localMonth = String(now.getMonth() + 1).padStart(2, '0');
+      const localDay = String(now.getDate()).padStart(2, '0');
+      
+      const fechaSegura = new Date(`${localYear}-${localMonth}-${localDay}T12:00:00`);
+
       const compraPayload = {
         codigo_cpr: selectedBuyerId,
         id_lte: selectedLoteId,
-        precio_kilo_final: precioVal,
-        precio_total: kilosVal * precioVal,
-        fecha: new Date().toISOString(),
+        fecha: fechaSegura.toISOString(), 
         kilos_vendidos: kilosVal,
-        cajas_vendidas: cajasVal
+        cajas_vendidas: cajasVal,
+        precio_kilo_final: precioVal,
+        precio_total: kilosVal * precioVal
       };
 
-      const response = await fetch('https://api-lonja.onrender.com/api/sales', {
+      const response = await fetch('http://localhost:4000/api/sales', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(compraPayload)
@@ -105,45 +104,37 @@ export const useSalesController = () => {
 
   const handleCreateBuyer = async (e) => {
     e.preventDefault();
-    
-    // Crear comprador
     const buyerData = {
-      nombre: newBuyerData.nombre,
-      apellido_paterno: newBuyerData.paterno,
-      apellido_materno: newBuyerData.materno,
-      correo: newBuyerData.correo,
-      direccion: newBuyerData.direccion
+      nombre: newBuyerData.nombre, apellido_paterno: newBuyerData.paterno,
+      apellido_materno: newBuyerData.materno, correo: newBuyerData.correo, direccion: newBuyerData.direccion
     };
-
     try {
-      const res = await fetch('https://api-lonja.onrender.com/api/buyers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buyerData)
+      const res = await fetch('http://localhost:4000/api/buyers', {      
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buyerData)
       });
-      const newBuyer = await res.json();
+      const responseData = await res.json();
       
-      await loadData(); // Recargar listas
-      setSelectedBuyerId(newBuyer.codigo_cpr);
+      if (!res.ok) {
+        if (responseData.message && (responseData.message.includes('E11000') || responseData.message.includes('duplicate'))) {
+          alert("⚠️ Error: Ese correo ya está registrado.");
+        } else {
+          alert("Error al crear comprador: " + responseData.message);
+        }
+        return; 
+      }
+      
+      await loadData();
+      setSelectedBuyerId(responseData.codigo_cpr);
       setShowBuyerModal(false);
       setNewBuyerData({ nombre: '', paterno: '', materno: '', correo: '', direccion: '' });
-    } catch (error) {
-      console.error("Error creando comprador rápido:", error);
-    }
+    } catch (error) { console.error(error); alert("Error de conexión"); }
   };
 
   return {
-    compradores,
-    inventario,
-    selectedBuyerId, setSelectedBuyerId,
-    selectedLoteId, setSelectedLoteId,
-    saleData, setSaleData,
-    status,
-    calculateTotal,
-    handleSaleSubmit,
-    showBuyerModal, setShowBuyerModal,
-    newBuyerData, setNewBuyerData,
-    handleCreateBuyer,
+    compradores, inventario, selectedBuyerId, setSelectedBuyerId,
+    selectedLoteId, setSelectedLoteId, saleData, setSaleData, status,
+    calculateTotal, handleSaleSubmit, showBuyerModal, setShowBuyerModal,
+    newBuyerData, setNewBuyerData, handleCreateBuyer, 
     selectedLote: inventario.find(l => l.id_lte === selectedLoteId)
   };
 };

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'https://api-lonja.onrender.com/api/buyers';
+const API_URL = 'http://localhost:4000/api/buyers';
+
+//const API_URL = 'https://api-lonja.onrender.com/api/buyers';
 
 export const useBuyersController = () => {
   const [buyers, setBuyers] = useState([]);
@@ -53,10 +55,21 @@ export const useBuyersController = () => {
         body: JSON.stringify(buyerData)
       });
     } else {
-      await fetch(API_URL, {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
+      const res = await fetch(API_URL, {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(buyerData)
       });
+      const responseData = await res.json();
+      if (!res.ok) {
+        // Verificamos si es error de duplicado (Mongo error 11000)
+        if (responseData.message && (responseData.message.includes('E11000') || responseData.message.includes('duplicate'))) {
+          alert("⚠️ Error: Este correo ya está registrado en el sistema.");
+        } else {
+          alert("Error al guardar: " + (responseData.message || "Desconocido"));
+        }
+        return;
+      }
     }
     resetForm();
     loadBuyers();

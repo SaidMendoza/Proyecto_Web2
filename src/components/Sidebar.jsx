@@ -3,7 +3,6 @@ import { LayoutDashboard, ShoppingCart, Users, LogOut, Package, FishSymbol, Shie
 
 export const Sidebar = ({ activePage, onNavigate, onLogout, currentUser }) => {
   const menuItems = [
-    { id: 'dashboard', label: 'Reportes Diarios', icon: LayoutDashboard },
     { id: 'inventory', label: 'Inventario (Lotes)', icon: FishSymbol },
     { id: 'sales', label: 'Registro de Ventas', icon: ShoppingCart },
     { id: 'buyers', label: 'Compradores', icon: Users },
@@ -11,6 +10,9 @@ export const Sidebar = ({ activePage, onNavigate, onLogout, currentUser }) => {
 
   // Only admins can see User Management
   if (currentUser?.role === 'admin') {
+      // Agregamos Dashboard al principio
+      menuItems.unshift({ id: 'dashboard', label: 'Reportes Diarios', icon: LayoutDashboard });
+      // Agregamos Usuarios al final
       menuItems.push({ id: 'users', label: 'Usuarios y Accesos', icon: ShieldCheck });
   }
 
