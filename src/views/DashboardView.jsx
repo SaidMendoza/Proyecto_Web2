@@ -89,7 +89,6 @@ export const DashboardView = () => {
               <th className="px-6 py-3 text-right">Kilos</th>
               <th className="px-6 py-3 text-right">Cajas</th>
               <th className="px-6 py-3 text-right">Total</th>
-              <th className="px-6 py-3 text-center">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -127,10 +126,7 @@ export const DashboardView = () => {
       {editingSale && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 animate-fade-in-up">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg">Editar Venta</h3>
-              <button onClick={() => setEditingSale(null)}><X className="w-5 h-5 text-slate-400" /></button>
-            </div>
+            
             
             <div className="bg-blue-50 p-3 rounded mb-4 text-sm text-blue-800">
                Stock + esta venta: <strong>{((editingSale.lote?.kilos || 0) + (editingSale.kilos_vendidos ?? 0)).toFixed(2)} kg</strong>
