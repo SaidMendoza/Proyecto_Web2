@@ -21,7 +21,7 @@ export const DashboardView = () => {
   const chartData = ventas.map(v => ({
     name: v.comprador.nombre + ' ' + v.comprador.apellido_paterno,
     total: v.precio_total,
-    kilos: v.kilos_vendidos ?? v.lote.kilos
+    kilos: v.kilos_vendidos ?? v.lote?.kilos ?? 0
   }));
 
   return (
@@ -89,6 +89,7 @@ export const DashboardView = () => {
               <th className="px-6 py-3 text-right">Kilos</th>
               <th className="px-6 py-3 text-right">Cajas</th>
               <th className="px-6 py-3 text-right">Total</th>
+              <th className="px-6 py-3 text-center">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -97,12 +98,25 @@ export const DashboardView = () => {
             ) : (
               ventas.map(v => (
                 <tr key={v.id_cmp} className="hover:bg-slate-50">
-                  <td className="px-6 py-3">{new Date(v.fecha).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                  {/* --- CORRECCIÓN AQUÍ: TIMEZONE UTC --- */}
+                  <td className="px-6 py-3">
+                    {new Date(v.fecha).toLocaleTimeString([], {
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        timeZone: 'UTC' 
+                    })}
+                  </td>
+                  
                   <td className="px-6 py-3">{v.comprador.nombre} {v.comprador.apellido_paterno}</td>
-                  <td className="px-6 py-3">{v.especie?.nombre}</td>
+                  <td className="px-6 py-3">{v.especie?.nombre || 'Lote eliminado'}</td>
                   <td className="px-6 py-3 text-right">{v.kilos_vendidos?.toFixed(2)}</td>
                   <td className="px-6 py-3 text-right">{v.cajas_vendidas}</td>
                   <td className="px-6 py-3 text-right font-bold">${v.precio_total.toFixed(2)}</td>
+                  <td className="px-6 py-3 text-center">
+                    <button onClick={() => openEditModal(v)} className="text-blue-500 hover:bg-blue-50 p-2 rounded">
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
@@ -119,7 +133,7 @@ export const DashboardView = () => {
             </div>
             
             <div className="bg-blue-50 p-3 rounded mb-4 text-sm text-blue-800">
-               Stock físico disponible + esta venta: <strong>{(editingSale.lote.kilos + (editingSale.kilos_vendidos ?? 0)).toFixed(2)} kg</strong>
+               Stock + esta venta: <strong>{((editingSale.lote?.kilos || 0) + (editingSale.kilos_vendidos ?? 0)).toFixed(2)} kg</strong>
             </div>
 
             <form onSubmit={handleUpdateSale} className="space-y-4">

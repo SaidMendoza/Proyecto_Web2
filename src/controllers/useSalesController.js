@@ -16,7 +16,6 @@ export const useSalesController = () => {
 
   useEffect(() => { loadData(); }, []);
 
-  //Autocompletar datos al seleccionar Lote
   useEffect(() => {
     if (selectedLoteId) {
       const lote = inventario.find(l => l.id_lte === selectedLoteId);
@@ -34,6 +33,7 @@ export const useSalesController = () => {
 
   const loadData = async () => {
     try {
+      // URL DE PRODUCCIÓN (Render)
       const resBuyers = await fetch('https://api-lonja.onrender.com/api/buyers'); 
       const compradoresReales = await resBuyers.json();
       setCompradores(compradoresReales);
@@ -63,23 +63,30 @@ export const useSalesController = () => {
       const cajasVal = parseInt(saleData.cajas) || 0;
       const precioVal = parseFloat(saleData.precio);
 
+      // --- CORRECCIÓN DE HORA EXACTA ---
       const now = new Date();
-      const localYear = now.getFullYear();
-      const localMonth = String(now.getMonth() + 1).padStart(2, '0');
-      const localDay = String(now.getDate()).padStart(2, '0');
+      // Extraemos los componentes locales
+      const Y = now.getFullYear();
+      const M = String(now.getMonth() + 1).padStart(2, '0');
+      const D = String(now.getDate()).padStart(2, '0');
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
       
-      const fechaSegura = new Date(`${localYear}-${localMonth}-${localDay}T12:00:00`);
+      // Construimos la fecha manualmente y le agregamos "Z" para que Mongo la respete tal cual
+      const fechaExacta = `${Y}-${M}-${D}T${h}:${m}:${s}.000Z`;
 
       const compraPayload = {
         codigo_cpr: selectedBuyerId,
         id_lte: selectedLoteId,
-        fecha: fechaSegura.toISOString(), 
+        fecha: fechaExacta, // Enviamos la hora congelada
         kilos_vendidos: kilosVal,
         cajas_vendidas: cajasVal,
         precio_kilo_final: precioVal,
         precio_total: kilosVal * precioVal
       };
 
+      // URL DE PRODUCCIÓN (Render)
       const response = await fetch('https://api-lonja.onrender.com/api/sales', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -109,6 +116,7 @@ export const useSalesController = () => {
       apellido_materno: newBuyerData.materno, correo: newBuyerData.correo, direccion: newBuyerData.direccion
     };
     try {
+      // URL DE PRODUCCIÓN (Render)
       const res = await fetch('https://api-lonja.onrender.com/api/buyers', {      
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buyerData)
       });
